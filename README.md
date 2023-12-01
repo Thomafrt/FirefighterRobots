@@ -1,7 +1,7 @@
 # FirefighterRobots
 
 Compilation
-javac src/GridView.java
+javac src/*.java
 
 Lancement fenetre
 java src/GridView
