@@ -1,7 +1,8 @@
 # FirefighterRobots
 
-Compilation
-javac src/*.java
+Compilation :
+
+javac -d bin src/*.java
 
 Lancement fenetre :
 

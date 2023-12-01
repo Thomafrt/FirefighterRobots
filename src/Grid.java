@@ -17,4 +17,12 @@ public class Grid {
 		
 	}
 
+	public void setFire(Coordonnee coord) {
+		isFire[coord.x][coord.y] = true;
+	}
+
+	public void updateGrid() {
+		
+	}
+
 }
