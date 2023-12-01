@@ -1,8 +1,7 @@
 # FirefighterRobots
 
-Compilation du projet :
-
-javac src/GridView.java
+Compilation
+javac src/*.java
 
 Lancement fenetre :
 
