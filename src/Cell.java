@@ -8,4 +8,12 @@ public class Cell {
 		this.coordonnee=coordonnee;
 		this.state=state;
 	}
+
+	public Coordonnee getCoordonnee() {
+		return coordonnee;
+	}
+
+	public int getState() {
+		return state;
+	}
 }
