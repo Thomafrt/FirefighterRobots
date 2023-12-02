@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Grid {
@@ -13,6 +14,10 @@ public class Grid {
 	 * Coordonnées de la base
 	 */
 	public Coordonnee base;
+	/**
+	 * Liste des coordonnées des départs de feu
+	 */
+	public ArrayList<Coordonnee> fireStart;
 	
 	/**
 	 * Constructeur de la grille
@@ -44,6 +49,7 @@ public class Grid {
 			y = rand.nextInt(size);
 		}while(x==coord.x && y==coord.y);
 		cells[x][y].state=2;
+		fireStart.add(new Coordonnee(x,y));
 	}
 
 	public Cell getCell(Coordonnee coord) {

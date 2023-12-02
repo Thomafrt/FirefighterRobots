@@ -8,7 +8,7 @@ import java.util.TimerTask;
 public class Turn {
 
 	Grid currentGrid;
-	Boolean isStillFire = true;
+	Boolean isStillFire = true; //si la grille contient toujours au moins 1 feu
 	int turnNb = 0;
 
 	public Turn(Grid initGrid) {
@@ -20,11 +20,10 @@ public class Turn {
 		Timer timer = new Timer();
 		// Créez une tâche qui sera exécutée toutes les secondes
 		TimerTask task = new TimerTask() {
-				@Override
+			@Override
 			public void run() {
-
-				while(isStillFire && turnNb<100){
-					updateGrid();
+				while(isStillFire && turnNb<10){
+					nextGrid();
 					try {
 						// thread en pause pendant 1 seconde
 						Thread.sleep(1000);
@@ -37,9 +36,45 @@ public class Turn {
 		timer.scheduleAtFixedRate(task, 0, 1000);
 	}
 
-	public void updateGrid(){
+	/**
+	 * Calcule la grille suivante
+	 */
+	public void nextGrid(){
 		System.out.println("Turn "+turnNb);
+		
+		for(int i=0; i<currentGrid.getSize(); i++) {
+			for(int j=0; j<currentGrid.getSize();j++) {
+				Cell currentCell = currentGrid.getCell(i,j);
+				if(currentCell.getState()==2){ //si la cellule est en feu, brule toutes les voisines
+					Cell topCell = currentGrid.getCell(i,j-1);
+					Cell botCell = currentGrid.getCell(i,j+1);
+					Cell leftCell = currentGrid.getCell(i-1,j);
+					Cell rightCell = currentGrid.getCell(i+1,j);
+					if(topCell.getState()==1){
+						topCell.setState(2);
+					}
+					if(botCell.getState()==1){
+						botCell.setState(2);
+					}
+					if(leftCell.getState()==1){
+						leftCell.setState(2);
+					}
+					if(rightCell.getState()==1){
+						rightCell.setState(2);
+					}
+				}
+			}
+		}
+		updateGrid(currentGrid);
 		turnNb++;
+	}
+
+	/**
+	 * Met à jour la grille visuelle
+	 * @param newGrid
+	 */
+	public void updateGrid(Grid newGrid){
+		//TODO mettre à jour la grille dans la vue
 	}
 
 	
