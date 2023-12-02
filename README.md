@@ -6,4 +6,4 @@ javac -d bin src/*.java
 
 Lancement fenetre :
 
-java src/GridView.java
+java -cp bin GridView

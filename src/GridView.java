@@ -31,12 +31,14 @@ public class GridView extends JFrame {
 
     public GridView(Grid grid) {
         this.grid = grid;
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, grid.getSize() * 20, grid.getSize() * 20); // Ajuster la taille de la fenêtre en fonction de la grille
         contentPane = new GridPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
+		//Lancer les tours
+		Turn turn = new Turn(grid);
+		turn.run();
     }
 
 	/**
@@ -66,6 +68,7 @@ public class GridView extends JFrame {
 				}
 			}
 
+			// Dessiner la grille
 			for (int row = 0; row < grid.getSize(); row++) {
 				for (int col = 0; col < grid.getSize(); col++) {
 					int x = offsetX + col * cellSize;

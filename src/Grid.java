@@ -46,10 +46,6 @@ public class Grid {
 		cells[x][y].state=2;
 	}
 
-	public void updateGrid() {
-		
-	}
-
 	public Cell getCell(Coordonnee coord) {
 		return cells[coord.x][coord.y];
 	}
