@@ -11,7 +11,7 @@ public class GridView extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private Grid grid;
+    public Grid grid;
 
 	/**
 	 * Launch the application.
@@ -22,6 +22,9 @@ public class GridView extends JFrame {
                 try {
                     GridView frame = new GridView(new Grid(21));  // Passer la taille souhaitée
                     frame.setVisible(true);
+					//Lancer les tours
+					Turn turn = new Turn(frame);
+					turn.run();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -36,9 +39,6 @@ public class GridView extends JFrame {
         contentPane = new GridPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
-		//Lancer les tours
-		Turn turn = new Turn(grid);
-		turn.run();
     }
 
 	/**
@@ -48,12 +48,10 @@ public class GridView extends JFrame {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-
 			//Definir la taille des cellules en fonction de la taille de la grille et de la taille de la fenêtre
 			int cellSize = Math.min(getWidth() / grid.getSize(), getHeight() / grid.getSize());
 			int offsetX = (getWidth() - grid.getSize() * cellSize) / 2;
 			int offsetY = (getHeight() - grid.getSize() * cellSize) / 2;
-
 			// Stocker les coordonnées des bases (si plusieurs) et des feux
 			ArrayList<Coordonnee> bases = new ArrayList<>();
 			ArrayList<Coordonnee> fires = new ArrayList<>();
@@ -67,7 +65,6 @@ public class GridView extends JFrame {
 					}
 				}
 			}
-
 			// Dessiner la grille
 			for (int row = 0; row < grid.getSize(); row++) {
 				for (int col = 0; col < grid.getSize(); col++) {
@@ -93,5 +90,15 @@ public class GridView extends JFrame {
 				}
 			}
 		}
+	}	
+	/**
+	 * Met à jour la grille
+	 * @param newGrid
+	 */
+	public void updateGrid(Grid newGrid){
+		grid = newGrid; //la grille est mise à jour
+		EventQueue.invokeLater(() -> {
+            contentPane.repaint(); //redessiner la grille
+        });
 	}
 }

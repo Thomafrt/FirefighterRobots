@@ -1,8 +1,9 @@
-public class Cell {
+public class Cell implements Cloneable {
 
 	public Coordonnee coordonnee;
-	public int state; // 0: base 1: safe 2: onFire 3: beingWatered 4: Burned 5:inocnnu
+	public int state; // 0: base 1: safe 2: onFire 3: beingWatered 4: Burned 5:inconnu
 	public boolean asHuman;
+	public int duration;
 	
 	public Cell(Coordonnee coordonnee, int state) {
 		this.coordonnee=coordonnee;
@@ -20,4 +21,19 @@ public class Cell {
 	public void setState(int state) {
 		this.state = state;
 	}
+
+	public boolean isValidCell(int size) {
+		if( (coordonnee.x >= 0 && coordonnee.x < size) && (coordonnee.y >= 0 && coordonnee.y < size))
+			return true;
+		else
+			return false;
+	}
+
+	public Cell clone() {
+        try {
+            return (Cell) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError(e);
+        }
+    }
 }

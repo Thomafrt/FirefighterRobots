@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Grid {
+public class Grid implements Cloneable{
 	/**
 	 * Taille de la grille : impaire pour centrer la base
 	 */
@@ -17,7 +17,7 @@ public class Grid {
 	/**
 	 * Liste des coordonnées des départs de feu
 	 */
-	public ArrayList<Coordonnee> fireStart;
+	public ArrayList<Coordonnee> fireStart = new ArrayList<>();
 	
 	/**
 	 * Constructeur de la grille
@@ -56,12 +56,41 @@ public class Grid {
 		return cells[coord.x][coord.y];
 	}
 	public Cell getCell(int x, int y) {
-		return cells[x][
-			y];
+		return cells[x][y];
 	}
 
 	public int getSize() {
 		return size;
+	}
+
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return true si la coordonnée est dans la grille, false sinon
+	 */
+	public boolean isInSide(int x, int y){
+		if(x<0 || y<0 || x>=size || y>=size)
+			return false;
+		else
+			return true;
+	}
+
+	@Override
+	public Grid clone() {
+		try {
+			Grid clonedGrid = (Grid) super.clone();
+			// Implémentez la copie profonde pour les objets internes
+			clonedGrid.cells = new Cell[size][size];
+			for (int i = 0; i < size; i++) {
+				for (int j = 0; j < size; j++) {
+					clonedGrid.cells[i][j] = this.cells[i][j].clone();
+				}
+			}
+			return clonedGrid;
+		} catch (CloneNotSupportedException e) {
+			throw new InternalError(e);
+		}
 	}
 
 }
