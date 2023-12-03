@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,6 +10,9 @@ public class GridView extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+	/**
+	 * La grille du modèle
+	 */
     public Grid grid;
 
 	/**
@@ -52,19 +54,26 @@ public class GridView extends JFrame {
 			int cellSize = Math.min(getWidth() / grid.getSize(), getHeight() / grid.getSize());
 			int offsetX = (getWidth() - grid.getSize() * cellSize) / 2;
 			int offsetY = (getHeight() - grid.getSize() * cellSize) / 2;
-			// Stocker les coordonnées des bases (si plusieurs) et des feux
-			ArrayList<Coordonnee> bases = new ArrayList<>();
-			ArrayList<Coordonnee> fires = new ArrayList<>();
+			// Mettre à jour les listes de coordonnées des bases, des feux et des cases brûlés
 			for (int i = 0; i < grid.getSize(); i++) {
 				for (int j = 0; j < grid.getSize(); j++) {
 					if (grid.getCell(i, j).getState() == 0) {
-						bases.add(grid.getCell(i, j).getCoordonnee());
+						grid.bases.add(grid.getCell(i, j).getCoordonnee());
 					}
 					if (grid.getCell(i, j).getState() == 2) {
-						fires.add(grid.getCell(i, j).getCoordonnee());
+						grid.fires.add(grid.getCell(i, j).getCoordonnee());
+					}
+					if (grid.getCell(i, j).getState() == 4) {
+						grid.burned.add(grid.getCell(i, j).getCoordonnee());
+						grid.fires.remove(grid.getCell(i, j).getCoordonnee());
 					}
 				}
 			}
+
+			/*System.out.println("Bases : " + grid.bases);
+			System.out.println("Fires : " + grid.fires);
+			System.out.println("Gurned : " + grid.burned);*/
+
 			// Dessiner la grille
 			for (int row = 0; row < grid.getSize(); row++) {
 				for (int col = 0; col < grid.getSize(); col++) {
@@ -73,17 +82,24 @@ public class GridView extends JFrame {
 					g.setColor(Color.BLACK);
 					g.drawRect(x, y, cellSize, cellSize);
 
-					// Vérifier si la cellule est une base et colorier en noir
-					for (Coordonnee base : bases) {
+					// Vérifier si la cellule est une base et colorier en gris
+					for (Coordonnee base : grid.bases) {
 						if (row == base.x && col == base.y) {
-							g.setColor(Color.BLACK);
+							g.setColor(Color.GRAY);
 							g.fillRect(x, y, cellSize, cellSize);
 						}
 					}
 					// Vérifier si la cellule est un feu et colorier en rouge
-					for (Coordonnee fire : fires) {
+					for (Coordonnee fire : grid.fires) {
 						if (row == fire.x && col == fire.y) {
 							g.setColor(Color.RED);
+							g.fillRect(x, y, cellSize, cellSize);
+						}
+					}
+					// Vérifier si la cellule est brûlée et colorier en noir
+					for (Coordonnee burn : grid.burned) {
+						if (row == burn.x && col == burn.y) {
+							g.setColor(Color.BLACK);
 							g.fillRect(x, y, cellSize, cellSize);
 						}
 					}

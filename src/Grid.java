@@ -11,13 +11,18 @@ public class Grid implements Cloneable{
 	 */
 	public Cell [][] cells;
 	/**
-	 * Coordonnées de la base
+	 * Liste des coordonnées des bases
 	 */
-	public Coordonnee base;
+	public ArrayList<Coordonnee> bases = new ArrayList<>();
 	/**
-	 * Liste des coordonnées des départs de feu
+	 * Liste des coordonnées des cases en feu
 	 */
-	public ArrayList<Coordonnee> fireStart = new ArrayList<>();
+	public ArrayList<Coordonnee> fires = new ArrayList<>();
+	/**
+	 * Liste des coordonnées des cases brûlées
+	 */
+	public ArrayList<Coordonnee> burned = new ArrayList<>();
+
 	
 	/**
 	 * Constructeur de la grille
@@ -26,39 +31,75 @@ public class Grid implements Cloneable{
 	public Grid(int size) {
 		this.size = size;
 		cells = new Cell [size] [size]; //initialisation de la grille
-		base = new Coordonnee(size/2, size/2); //coordonnées de la base (au centre de la grille)
+		bases.add(new Coordonnee(size/2, size/2)); //coordonnées de la base au centre de la grille (possibilité d'avoir plusieurs bases)
 		for(int i=0; i<cells.length; i++) {
 			for(int j=0; j<cells[i].length;j++) {
-				if(i==(base.x) && j==(base.y)) { //la base au centre de la grille
-					cells[i][j] = new Cell(new Coordonnee(i,j), 0);
-				}
-				else{ //les autres cellules (safe)
-					cells[i][j] = new Cell(new Coordonnee(i,j), 1);
+				for (Coordonnee base : bases) {
+					if(i==(base.x) && j==(base.y)) { //place la ou les base(s)
+						cells[i][j] = new Cell(new Coordonnee(i,j), 0);
+					}
+					else{ //les autres cellules (safe)
+						cells[i][j] = new Cell(new Coordonnee(i,j), 1);
+					}
 				}
 			}
 		}
-		setFirstFire(base); //mettre le premier feu (case différente de la base)
+		setFirstFire(bases); //mettre le premier feu (case différente de la base)
 	}
 
-	public void setFirstFire(Coordonnee coord) {
-		Random rand = new Random();
-		int x;
-		int y;
-		do {
-			x = rand.nextInt(size);
-			y = rand.nextInt(size);
-		}while(x==coord.x && y==coord.y);
-		cells[x][y].state=2;
-		fireStart.add(new Coordonnee(x,y));
-	}
+	/**
+	 * Mettre le premier feu
+	 * @param bases
+	 */
+	public void setFirstFire(ArrayList<Coordonnee> bases) {
+        Random rand = new Random();
+        int x;
+        int y;
+        do {
+            x = rand.nextInt(size);
+            y = rand.nextInt(size);
+        } while (isBase(x, y));
+        cells[x][y].state = 2;
+        fires.add(new Coordonnee(x, y));
+    }
 
+	/**
+	 * Vérifier si la position (x, y) est une base
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+    private boolean isBase(int x, int y) {
+        for (Coordonnee base : bases) {
+            if (base.x == x && base.y == y) {
+                return true;  // La position (x, y) est une base
+            }
+        }
+        return false;  // La position (x, y) n'est pas une base
+    }
+
+	/**
+	 * Récupérer une cellule avec une coordonnée
+	 * @param coord
+	 * @return
+	 */
 	public Cell getCell(Coordonnee coord) {
 		return cells[coord.x][coord.y];
 	}
+	/**
+	 * Récupérer une cellule une la position (x, y)
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public Cell getCell(int x, int y) {
 		return cells[x][y];
 	}
 
+	/**
+	 * Récupérer la taille de la grille
+	 * @return
+	 */
 	public int getSize() {
 		return size;
 	}
@@ -76,7 +117,11 @@ public class Grid implements Cloneable{
 			return true;
 	}
 
+
 	@Override
+	/**
+	 * Clone la grille
+	 */
 	public Grid clone() {
 		try {
 			Grid clonedGrid = (Grid) super.clone();
