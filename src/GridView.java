@@ -25,9 +25,10 @@ public class GridView extends JFrame {
                 try {
 					int nbRobots = 3;
 					int sleepTime = 1000;
+					int gridSize = 21;
 					double propagationProb = 0.5;
 					double extinctionProb = 0.3;
-                    GridView frame = new GridView(nbRobots);  // Passer la taille souhaitée
+                    GridView frame = new GridView(nbRobots, gridSize);  // Passer la taille souhaitée
                     frame.setVisible(true);
 					//Lancer les tours
 					Turn turn = new Turn(frame, sleepTime, propagationProb, extinctionProb);
@@ -39,8 +40,8 @@ public class GridView extends JFrame {
         });
     }
 
-    public GridView(int nbRobots) {
-		Coordonnee baseCoordonnee = new Coordonnee(grid.size/2, grid.size/2);
+    public GridView(int nbRobots, int gridSize) {
+		Coordonnee baseCoordonnee = new Coordonnee(gridSize/2, gridSize/2);
 		this.grid= new Grid(21, baseCoordonnee);		
 		this.base = new Base(grid, baseCoordonnee, nbRobots);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -108,6 +109,18 @@ public class GridView extends JFrame {
 						if (row == burn.x && col == burn.y) {
 							g.setColor(Color.BLACK);
 							g.fillRect(x, y, cellSize, cellSize);
+						}
+					}
+					// Ajouter les robots
+
+					for (int i=0; i<base.robots.length; i++) {
+						Coordonnee robot = base.robots[i].currentCell.getCoordonnee();
+						if (row == robot.x && col == robot.y) {
+							g.setColor(Color.BLUE);
+							int circleSize = (int) (cellSize * 0.8); // Taille du cercle, ajustez si nécessaire
+               				int circleX = x + (cellSize - circleSize) / 2;
+                			int circleY = y + (cellSize - circleSize) / 2;
+                			g.fillOval(circleX, circleY, circleSize, circleSize);
 						}
 					}
 				}
