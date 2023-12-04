@@ -31,7 +31,7 @@ public class Grid implements Cloneable{
 	 * Constructeur de la grille
 	 * @param size
 	 */
-	public Grid(int size, Coordonnee baseCoord, boolean real, double propagationProb){
+	public Grid(int size, Coordonnee baseCoord, boolean real, double propagationProb, int nbHumans){
 		this.size = size;
 		cells = new Cell [size] [size]; //initialisation de la grille
 		bases.add(baseCoord); //coordonnées de la base au centre de la grille (possibilité d'avoir plusieurs bases)
@@ -47,7 +47,10 @@ public class Grid implements Cloneable{
 				}
 			}
 		}
-		if(real) setFirstFire(bases); //mettre le premier feu (case différente de la base)
+		if(real){ //Si c'est la grille originale
+			setFirstFire(bases); //mettre le premier feu (case différente de la base)
+			setHumans(nbHumans);
+		} 
 		this.propagationProb = propagationProb;
 	}
 
@@ -67,6 +70,19 @@ public class Grid implements Cloneable{
 		cells[x][y].fire = 10;
         fires.add(new Coordonnee(x, y));
     }
+
+	public void setHumans(int nbHumans){
+		Random rand = new Random();
+		int x;
+		int y;
+		for(int i=0; i<nbHumans; i++){
+			do {
+				x = rand.nextInt(size);
+				y = rand.nextInt(size);
+			} while (isBase(x, y));
+			cells[x][y].hasHuman = 1;
+		}
+	}
 
 	/**
 	 * Vérifier si la position (x, y) est une base
