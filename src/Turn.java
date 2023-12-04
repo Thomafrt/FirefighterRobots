@@ -110,6 +110,7 @@ public class Turn {
 		if (currentCell.getState() == 2 && random.nextDouble() < extinctionProb) { //% de chance de passer à l'état burned
 			currentCell.setState(3);
 			currentCell.fire = 0;
+			if(currentCell.hasHuman==1) currentCell.hasHuman=3;
 		}
 		}
     }

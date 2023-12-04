@@ -127,22 +127,22 @@ public class GridView extends JFrame {
 					// Ajouter les humains
 					if(grid.getCell(row, col).hasHuman != 0) {
 						if(grid.getCell(row, col).hasHuman == 1){
-							g.setColor(Color.GREEN);
-							int circleSize = (int) (cellSize * 0.5); // Taille du cercle, ajustez si nécessaire
+							g.setColor(Color.ORANGE);
+							int circleSize = (int) (cellSize * 0.5);
 							int circleX = x + (cellSize - circleSize) / 2;
 							int circleY = y + (cellSize - circleSize) / 2;
 							g.fillOval(circleX, circleY, circleSize, circleSize);
 						}
 						else if(grid.getCell(row, col).hasHuman == 2){
-							g.setColor(Color.ORANGE);
-							int circleSize = (int) (cellSize * 0.5); // Taille du cercle, ajustez si nécessaire
+							g.setColor(Color.GREEN);
+							int circleSize = (int) (cellSize * 0.5);
 							int circleX = x + (cellSize - circleSize) / 2;
 							int circleY = y + (cellSize - circleSize) / 2;
 							g.fillOval(circleX, circleY, circleSize, circleSize);
 						}
 						else if(grid.getCell(row, col).hasHuman == 3){
-							g.setColor(Color.WHITE);
-							int circleSize = (int) (cellSize * 0.5); // Taille du cercle, ajustez si nécessaire
+							g.setColor(Color.RED);
+							int circleSize = (int) (cellSize * 0.5);
 							int circleX = x + (cellSize - circleSize) / 2;
 							int circleY = y + (cellSize - circleSize) / 2;
 							g.fillOval(circleX, circleY, circleSize, circleSize);
