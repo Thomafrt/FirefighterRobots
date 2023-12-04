@@ -2,21 +2,21 @@ public class Cell implements Cloneable {
 
 	public Coordonnee coordonnee;
 	public int state; // 0: base 1: safe 2: onFire 3: Burned
-	public boolean asHuman;
+	public int asHuman; // 0: safe 1: saved 2: dead
 	public int fire; // value between 0 and 1 with 0.1 steps down
 	public int duration;
 	
 	public Cell(Coordonnee coordonnee, int state) {
 		this.coordonnee=coordonnee;
 		this.state=state;
-		this.asHuman=false;
+		this.asHuman=0;
 		this.fire=0;
 		this.duration=0;
 	}
 
-	public void set(int state, boolean asHuman, int fire, int duration) {
+	public void set(int state, int asHuman, int fire, int duration) {
 		this.state=state;
-		this.asHuman=asHuman;
+		this.asHuman=0;
 		this.fire=fire;
 		this.duration=duration;
 	}

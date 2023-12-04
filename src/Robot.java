@@ -92,6 +92,12 @@ public class Robot {
 
 		public void notifications(){
 			this.currentCell.duration=0;
+			if(this.currentCell.asHuman==0){
+				if(this.currentCell.state==3){
+					this.currentCell.asHuman=2;
+				}
+				else this.currentCell.asHuman=1;
+			}
 			Cell cell=this.currentCell;
 			// update knownGrid
 			this.knownGrid.getCell(currentCell.coordonnee)
