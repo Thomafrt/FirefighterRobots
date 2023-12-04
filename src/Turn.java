@@ -11,15 +11,14 @@ import java.util.List;
 
 public class Turn {
 
-	Grid currentGrid;
-	Grid nextGrid;
+	Grid grid;
 	GridView view;
 	int turnNb = 0;
 	boolean stillFire = true;
 
 	public Turn(GridView view) {
 		this.view = view;
-		currentGrid = view.grid;
+		grid = view.grid;
 	}
 
 	public void run() {
@@ -36,7 +35,7 @@ public class Turn {
 						// puis calcule de la grille suivante
 						nextGrid();
 						//! FIN DU JEU MARCHE PAS
-						if(currentGrid.fires.isEmpty()){//si il n'y a plus de feu
+						if(grid.fires.isEmpty()){//si il n'y a plus de feu
 							stillFire = false; //fin du jeu
 							System.out.println("Fin du jeu");
 						} 
@@ -53,15 +52,14 @@ public class Turn {
 	 * Calcule la grille suivante
 	 */
 	public void nextGrid(){
-		nextGrid = currentGrid.clone();
 		System.out.println("Turn "+turnNb);
-		int size = currentGrid.getSize();
+		int size = grid.getSize();
 		//* crée une liste des cellule en feu */
 		List<Cell> fireCells= new ArrayList<Cell>();; //tableau des cellules en feu
 		//parcourir la grille
 		for(int i=0; i<size; i++) {
 			for(int j=0; j<size; j++) {
-				Cell currentCell = currentGrid.getCell(i,j);
+				Cell currentCell = grid.getCell(i,j);
 				if(currentCell.getState()==2){ //si la cellule est en feu
 					fireCells.add(currentCell); //ajouter la cellule au tableau des cellules en feu
 					//*propagateFire(i, j); //propager le feu
@@ -70,42 +68,38 @@ public class Turn {
 		}
 		//* le feu se propage */
 		for (Cell cell : fireCells) {
-			propagateFire(cell.getCoordonnee().x, cell.getCoordonnee().y);
+			propagateFire(cell);
 		}
-		currentGrid = nextGrid.clone(); //la grille actuelle devient la grille suivante
-		view.updateGrid(nextGrid); //mettre à jour la grille dans la vue
+		view.updateGrid(grid); //mettre à jour la grille dans la vue
 		turnNb++;
 	}
 	 
-	private void propagateFire(int x, int y) {
+	private void propagateFire(Cell currentCell) {
 		Random random = new Random();
-		Cell currentCell = nextGrid.getCell(x,y); //cellule actuelle
-		if(nextGrid.isInSide(x, y-1)){ //si la cellule de gauche est dans la grille
-			Cell oldLeftCell = currentGrid.getCell(x,y-1);
-			Cell leftCell = nextGrid.getCell(x,y-1);
-			if(oldLeftCell.getState()==1 && random.nextDouble() < 0.5){ //et qu'elle est safe
+		int x = currentCell.coordonnee.x;
+		int y = currentCell.coordonnee.y;
+		if(grid.isInSide(x, y-1)){ //si la cellule de gauche est dans la grille
+			Cell leftCell = grid.getCell(x,y-1);
+			if(leftCell.getState()==1 && random.nextDouble() < 0.5){ //et qu'elle est safe
 				leftCell.setState(2); //elle devient en feu
 			}
 		}
-		if(nextGrid.isInSide(x, y+1)){ //si la cellule de droite est dans la grille
-			Cell oldRightCell = nextGrid.getCell(x,y+1);
-			Cell rightCell = nextGrid.getCell(x,y+1);
-			if(oldRightCell.getState()==1 && random.nextDouble() < 0.5){
-				rightCell.setState(2);
+		if(grid.isInSide(x, y+1)){ //si la cellule de droite est dans la grille
+			Cell rightCell = grid.getCell(x,y+1);
+			if(rightCell.getState()==1 && random.nextDouble() < 0.5){ //et qu'elle est safe
+				rightCell.setState(2); //elle devient en feu
 			}
 		}
-		if(nextGrid.isInSide(x-1, y)){ //si la cellule du haut est dans la grille
-			Cell oldTopCell = nextGrid.getCell(x-1,y);
-			Cell topCell = nextGrid.getCell(x-1,y);
-			if(oldTopCell.getState()==1 && random.nextDouble() < 0.5){
-				topCell.setState(2);
+		if(grid.isInSide(x-1, y)){ //si la cellule du haut est dans la grille
+			Cell topCell = grid.getCell(x-1,y);
+			if(topCell.getState()==1 && random.nextDouble() < 0.5){ //et qu'elle est safe
+				topCell.setState(2); //elle devient en feu
 			}
 		} 
-		if(nextGrid.isInSide(x+1, y)){ //si la cellule du bas est dans la grille
-			Cell oldBotCell = nextGrid.getCell(x+1,y);
-			Cell botCell = nextGrid.getCell(x+1,y);
-			if(oldBotCell.getState()==1 && random.nextDouble() < 0.5){
-				botCell.setState(2);
+		if(grid.isInSide(x+1, y)){ //si la cellule du bas est dans la grille
+			Cell bottomCell = grid.getCell(x+1,y);
+			if(bottomCell.getState()==1 && random.nextDouble() < 0.5){ //et qu'elle est safe
+				bottomCell.setState(2); //elle devient en feu
 			}
 		}
 		//si la cellule est en feu depuis plus de 3 tours
