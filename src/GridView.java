@@ -25,7 +25,7 @@ public class GridView extends JFrame {
                 try {
 					int nbRobots = 7;
 					int sleepTime = 100;
-					int gridSize = 21;
+					int gridSize = 25;
 					double propagationProb = 0.5;
 					double extinctionProb = 0.3;
 					int nbHumans = 5;
@@ -44,7 +44,7 @@ public class GridView extends JFrame {
 
     public GridView(int nbRobots, int gridSize, double propagationProb, int nbHumans) {
 		Coordonnee baseCoordonnee = new Coordonnee(gridSize/2, gridSize/2);
-		this.grid= new Grid(21, baseCoordonnee, true, propagationProb, nbHumans);		
+		this.grid= new Grid(gridSize, baseCoordonnee, true, propagationProb, nbHumans);		
 		this.base = new Base(grid, baseCoordonnee, nbRobots);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, grid.getSize() * 20, grid.getSize() * 20); // Ajuster la taille de la fenêtre en fonction de la grille
