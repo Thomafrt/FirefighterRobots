@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class Robot {
 
-	public int energy;
-	public int water;
+	public float energy;
+	public float water;
 	public Grid knownGrid;
 	public Grid realGrid;
 	public boolean atBase;
@@ -16,8 +16,8 @@ public class Robot {
 	public Base base;
 	
 	public Robot(Grid knownGrid, Grid realGrid, Base base) {
-		this.energy=3;
-		this.water=2;
+		this.energy=30;
+		this.water=20;
 		this.knownGrid=knownGrid;
 		this.realGrid=realGrid;
 		this.atBase=true;
@@ -29,18 +29,24 @@ public class Robot {
 	}
 
 	public void turn(){
+		for (int i=0; i<knownGrid.getSize(); i++) {
+			for (int j=0; j<knownGrid.getSize(); j++) {
+			}
+		}
+		// System.out.println("Robot, coord: "+this.currentCell.coordonnee.x+" "+this.currentCell.coordonnee.y+", pathsize: "+path.size());
 		// si je suis à la base et que je suis plein, je mets à jour la carte, je trace un itinéraire et je pars...
 		if(atBase){
-			if(energy==3){
+			if(energy==30){
 				this.knownGrid=base.knownGrid.clone();
 				this.path=getnewPath(currentCell.coordonnee);
 				if(this.path.size()>0){
 				this.inActivity=true;
+				this.atBase=false;
 				moveOnPath();
 				}
 				//... sinon je me recharge de 0.1 énérgie
 			}else{
-				energy+=0.1;
+				energy+=1;
 			}
 		}
 		else{
@@ -53,30 +59,33 @@ public class Robot {
 				//inActivity
 				if(currentCell.state==2){
 					if(water>0){
-						water-=0.1;
-						this.currentCell.fire-=0.1;
-						this.realGrid.getCell(currentCell.coordonnee).fire-=0.1;
+						water-=1;
+						this.currentCell.fire-=1;
+						this.realGrid.getCell(currentCell.coordonnee).fire-=1;
+						notifications();
 						if(this.currentCell.fire==0){
 							this.currentCell.state=3;
 							this.realGrid.getCell(currentCell.coordonnee).state=3;
 							notifications();
 							this.path=getnewPath(currentCell.coordonnee);
 						}
+						System.out.println("fire on" +currentCell.coordonnee.x +" "+currentCell.coordonnee.y+", "+realGrid.getCell(currentCell.coordonnee).fire+" left, state: "+currentCell.state);
+
 					}
 				}
 				else{
 					// sinon j'avance
 					moveOnPath();
 					// si je n’ai plus d’énérgie, je planifie un trajet de retour et je me rend indisponible	
-					if(energy*10<=getDistanceToBase(currentCell.coordonnee)){
+					if(energy<=getDistanceToBase(currentCell.coordonnee)){
 					this.inActivity=false;
 					this.path=getPathHome();
 					}
 				}
-			}			
+			}
+			energy-=1;
 		}
 		knownGrid.incrementDuration();
-		energy-=0.1;
 	}
 
 
@@ -92,14 +101,12 @@ public class Robot {
 		}
 
 		public void moveOnPath(){
-			if (this.path.size()==0) getnewPath(currentCell.coordonnee);
-			else{
-				this.currentCell=realGrid.getCell(this.path.get(0));
-				this.path.remove(0);
-			}
+			if (this.path.size()==0) this.path=getnewPath(currentCell.coordonnee);
+			this.currentCell=realGrid.getCell(this.path.get(0));
+			this.path.remove(0);
 			if(currentCell.state==0){
 					this.atBase=true;
-					this.water=2;
+					this.water=20;
 				}
 				else{
 				// s'il y a quelque chose à signaler sur cette case je le signale
@@ -110,7 +117,7 @@ public class Robot {
 		public List<Coordonnee> getnewPath(Coordonnee from){
 			int distanceToBase = getDistanceToBase(from);
 			// le détour qu'on peut se permettre pour tout de meme rentrer.
-			int overflow = ((int)(energy-0.1)*10-distanceToBase)/2;
+			int overflow = ((int)(energy-1)-distanceToBase)/2;
 
 			// les cases que l'on peut explorer avant de devoir rentrer
 			Set<Cell> possibleCells = getPossibleSpace(from, overflow);
@@ -134,12 +141,6 @@ public class Robot {
 			if (objective != null) {
 				return getPath(from, objective.coordonnee);
 			} else {
-			// sinon on va voir une case inconnu
-				for (Cell cell : possibleCells) {
-					if (cell.state == 5) {
-						return getPath(from, cell.coordonnee);
-					}
-				}
 			// sinon on va voir une case safe connu depuis longtemps en rapport "age de l'info"²/distance
 			double maxScore = 0;
 
@@ -152,6 +153,9 @@ public class Robot {
 						objective = cell;
 					}
 				}	
+			}
+			if(objective!=null){
+				return getPath(from, objective.coordonnee);
 			}
 			// si il n'y a pas de case en feu, ni inconnu ni safe, c'est que tout est déja brulé, on rentre
 			return getPathHome();	
@@ -204,6 +208,9 @@ public class Robot {
 						|| i>upright.x && j<upright.y && (Math.abs(i-upright.x)+Math.abs(j-upright.y))>overflow
 						|| i>downright.x && j>downright.y && (Math.abs(i-downright.x)+Math.abs(j-downright.y))>overflow
 					)){
+					if((!(i==from.x && j==from.y))
+					&& (!(i==base.coord.x && j==base.coord.y))
+					&& i>=0 && i<knownGrid.size && j>=0 && j<knownGrid.size) 
 					possibleCells.add(knownGrid.getCell(new Coordonnee(i, j)));
 					}
 				}
@@ -217,6 +224,8 @@ public class Robot {
 	
 		public List<Coordonnee> getPath(Coordonnee C1, Coordonnee C2){
 			List<Coordonnee> path= new ArrayList<Coordonnee>();
+			int x=C1.x;
+			int y=C1.y;
 			int deltaX=C2.x-C1.x;
 			int deltaY=C2.y-C1.y;
 			while(deltaX!=0 || deltaY!=0){
@@ -224,44 +233,53 @@ public class Robot {
 					if((int)Math.random()==1){
 						if(deltaX>0){
 							deltaX-=1;
-							path.add(new Coordonnee(C1.x-1, C1.y));
+							x++;
+							
 						}
 						else if(deltaX<0){
 							deltaX+=1;
-							path.add(new Coordonnee(C1.x+1, C1.y));
+							x--;
+							
 						}
 					}
 					else if(deltaY!=0){
 						if(deltaY>0){
 							deltaY-=1;
-							path.add(new Coordonnee(C1.x, C1.y-1));						
+							y++;
+													
 						}
 						else if(deltaY<0){
 							deltaY+=1;
-							path.add(new Coordonnee(C1.x, C1.y+1));						
+							y--;
+													
 						}
 					}
 				}
 				else if(deltaX!=0){
 				 	if(deltaX>0){
 							deltaX-=1;
-							path.add(new Coordonnee(C1.x-1, C1.y));
+							x++;
+							
 						}
 						else if(deltaX<0){
 							deltaX+=1;
-							path.add(new Coordonnee(C1.x+1, C1.y));
+							x--;
+							
 						}
 				}
 				else if(deltaY!=0){
 					if(deltaY>0){
 							deltaY-=1;
-							path.add(new Coordonnee(C1.x, C1.y-1));						
+							y++;
+													
 						}
 						else if(deltaY<0){
 							deltaY+=1;
-							path.add(new Coordonnee(C1.x, C1.y+1));						
+							y--;
+													
 						}
 				}
+				path.add(new Coordonnee(x, y));
 			}
 		return path;
 		}

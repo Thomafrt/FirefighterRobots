@@ -23,8 +23,8 @@ public class GridView extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-					int nbRobots = 3;
-					int sleepTime = 1000;
+					int nbRobots = 10;
+					int sleepTime = 500;
 					int gridSize = 21;
 					double propagationProb = 0.5;
 					double extinctionProb = 0.3;
@@ -42,7 +42,7 @@ public class GridView extends JFrame {
 
     public GridView(int nbRobots, int gridSize) {
 		Coordonnee baseCoordonnee = new Coordonnee(gridSize/2, gridSize/2);
-		this.grid= new Grid(21, baseCoordonnee);		
+		this.grid= new Grid(21, baseCoordonnee, true);		
 		this.base = new Base(grid, baseCoordonnee, nbRobots);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, grid.getSize() * 20, grid.getSize() * 20); // Ajuster la taille de la fenêtre en fonction de la grille
@@ -71,7 +71,7 @@ public class GridView extends JFrame {
 					if (grid.getCell(i, j).getState() == 2) {
 						grid.fires.add(grid.getCell(i, j).getCoordonnee());
 					}
-					if (grid.getCell(i, j).getState() == 4) {
+					if (grid.getCell(i, j).getState() == 3) {
 						grid.burned.add(grid.getCell(i, j).getCoordonnee());
 						grid.fires.remove(grid.getCell(i, j).getCoordonnee());
 					}

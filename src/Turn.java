@@ -59,6 +59,12 @@ public class Turn {
 	 */
 	public void nextGrid(){
 		System.out.println("Turn "+turnNb);
+		if(turnNb%10==0)propagateFire(); //propager le feu
+		view.updateGrid(grid); //mettre à jour la grille dans la vue
+		turnNb++;
+	}
+	 
+	private void propagateFire() {
 		int size = grid.getSize();
 		//* crée une liste des cellule en feu */
 		List<Cell> fireCells= new ArrayList<Cell>();; //tableau des cellules en feu
@@ -73,14 +79,7 @@ public class Turn {
 			}
 		}
 		//* le feu se propage */
-		for (Cell cell : fireCells) {
-			propagateFire(cell);
-		}
-		view.updateGrid(grid); //mettre à jour la grille dans la vue
-		turnNb++;
-	}
-	 
-	private void propagateFire(Cell currentCell) {
+		for (Cell currentCell : fireCells) {
 		Random random = new Random();
 		int x = currentCell.coordonnee.x;
 		int y = currentCell.coordonnee.y;
@@ -110,7 +109,8 @@ public class Turn {
 		}
 		//si la cellule est en feu depuis plus de 3 tours
 		if (currentCell.getState() == 2 && random.nextDouble() < extinctionProb) { //10% de chance de passer à l'état burned
-			currentCell.setState(4);
+			currentCell.setState(3);
+		}
 		}
     }
 

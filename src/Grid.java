@@ -29,7 +29,7 @@ public class Grid implements Cloneable{
 	 * Constructeur de la grille
 	 * @param size
 	 */
-	public Grid(int size, Coordonnee baseCoord){
+	public Grid(int size, Coordonnee baseCoord, boolean setFire){
 		this.size = size;
 		cells = new Cell [size] [size]; //initialisation de la grille
 		bases.add(baseCoord); //coordonnées de la base au centre de la grille (possibilité d'avoir plusieurs bases)
@@ -45,7 +45,7 @@ public class Grid implements Cloneable{
 				}
 			}
 		}
-		setFirstFire(bases); //mettre le premier feu (case différente de la base)
+		if(setFire) setFirstFire(bases); //mettre le premier feu (case différente de la base)
 	}
 
 	/**
@@ -61,6 +61,7 @@ public class Grid implements Cloneable{
             y = rand.nextInt(size);
         } while (isBase(x, y));
         cells[x][y].state = 2;
+		cells[x][y].fire = 10;
         fires.add(new Coordonnee(x, y));
     }
 

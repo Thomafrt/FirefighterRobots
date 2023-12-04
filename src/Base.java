@@ -8,7 +8,7 @@ public class Base {
 	
 	public Base(Grid realGrid, Coordonnee coordonnee, int nbRobots) {
 		this.coord = coordonnee;	
-		this.knownGrid = new Grid(realGrid.getSize(), coordonnee);
+		this.knownGrid = new Grid(realGrid.getSize(), coordonnee, false);
 		this.robots = new Robot[nbRobots];
 		for(int i=0; i<nbRobots; i++) {
 			robots[i] = new Robot(knownGrid.clone(), realGrid, this);
@@ -34,8 +34,8 @@ public class Base {
 		}
 		// sinon je fais tourner les robots
 		else {
+			knownGrid.incrementDuration();
 			for (int i = 0; i < robots.length; i++){
-				knownGrid.incrementDuration();
 				robots[i].turn();
 			} 
 		}
