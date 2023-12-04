@@ -7,111 +7,107 @@ public class Robot {
 
 	public int energy;
 	public int water;
-	public int wateringTimer;
-	public double speed=0.1;
 	public Grid knownGrid;
+	public Grid realGrid;
 	public boolean atBase;
 	public boolean inActivity;
-	public Cell currentCase;
+	public Cell currentCell;
 	public List<Coordonnee> path;
 	public Base base;
 	
-	public Robot() {
-		// TODO Auto-generated constructor stub
+	public Robot(Grid knownGrid, Grid reaGrid, Base base) {
+		this.energy=3;
+		this.water=2;
+		this.knownGrid=knownGrid;
+		this.realGrid=realGrid;
+		this.atBase=true;
+		this.inActivity=false;
+		this.currentCell=knownGrid.getCell(base.coord);
+		this.path=new ArrayList<Coordonnee>();
+		this.base=base;
+
 	}
 
-	/*
-	 * return true if the robot is at the base at the end of its move
-	 */
 	public void turn(){
-		// si je suis à la base et que je suis plein, je trace un itinéraire et je pars, sinon je me recharge de 0.1 énérgie
-		// si je suis sur le retour, j'avance, si j'arrive à la base je fais le plein d'eau.
-		// si je suis sur le terrain et que je n'ai plus d'énergie, je rentre à la base
-		// si je suis sur le terrain et qu'il y a un feu à éteindre, je l'éteint, sinon je me déplace
-		// si j'ai éteint un feu, je modifie mon path pour aller à la case la plus proche d'un feu à éteindre
-		// après mon déplacement si il y a un humain je le signale, si la case sur laquelle je suis à un état différent de celle que je connais, je le signale
+		// si je suis à la base et que je suis plein, je mets à jour la carte, je trace un itinéraire et je pars...
 		if(atBase){
 			if(energy==3){
-				this.path=getGoing();
+				this.knownGrid=base.knownGrid.clone();
+				this.path=getnewPath(currentCell.coordonnee);
+				if(this.path.size()>0){
+				this.inActivity=true;
 				moveOnPath();
+				}
+				//... sinon je me recharge de 0.1 énérgie
 			}else{
 				energy+=0.1;
 			}
-		}else{
-			decisionOnField(knownGrid);
 		}
+		else{
+			// si je suis sur le retour, j'avance.
+			if(!inActivity){
+				moveOnPath();
+			}
+			else{
+				// si la case est en feu et que j'ai de l'eau je lache de l'eau.
+				//inActivity
+				if(currentCell.state==2){
+					if(water>0){
+						water-=0.1;
+						this.currentCell.fire-=0.1;
+						this.realGrid.getCell(currentCell.coordonnee).fire-=0.1;
+						if(this.currentCell.fire==0){
+							this.currentCell.state=3;
+							this.realGrid.getCell(currentCell.coordonnee).state=3;
+							notifications();
+							this.path=getnewPath(currentCell.coordonnee);
+						}
+					}
+				}
+				else{
+					// sinon j'avance
+					moveOnPath();
+					// si je n’ai plus d’énérgie, je planifie un trajet de retour et je me rend indisponible	
+					if(energy*10<=getDistanceToBase(currentCell.coordonnee)){
+					this.inActivity=false;
+					this.path=getPathHome();
+					}
+				}
+			}			
+		}
+		knownGrid.incrementDuration();
+		energy-=0.1;
 	}
 
 
-		public void decisionOnField(Grid knownGrid){
-			if(!inActivity){
-			moveOnPath();
-			if(currentCase.state==0){
-				this.atBase=true;
-				this.water=2;
-			}
-			}
-			else{
-				if(this.wateringTimer>0){
-					this.wateringTimer-=1;
-					if(this.wateringTimer==0){
-						update(4);
-						getnewPath(currentCase.coordonnee);
-					}
-				}
-				if(currentCase.state==2){
-					this.water-=1;
-					update(3);
-					this.wateringTimer=9;
-					update(2);
-					// TODO update knownGrid
-				}
-				else{
-					moveOnPath();
-					if(currentCase.asHuman){
-						update(currentCase.state, true);
-					}
-					else if(currentCase.state!=knownGrid.getCell(currentCase.coordonnee).state){
-						update(currentCase.state);
-						// TODO update knownGrid
-						// TODO update path
-					}
-					if(energy*10<=getDistanceToBase(currentCase.coordonnee)){
-						backToBase();
-					}
-				}
-			}
-			// si je vois un feu et que j'ai de l'eau, je lache de l’eau sur le feu
-			// j’explore la case la plus proche selon un rapport distance - proximité avec un feu connu - date de dernière update.
-			// si je vois un humain, je le signale,
-			// si je n’ai plus d’énérgie, je rentre
-		}
-
-
-
-		public void update(int state){
-			// je met à jour la case sur laquelle je suis
-			// je met à jour la carte globale
-			// je met à jour mon path
-		}
-
-		public void update(int state, boolean human){
-			// je met à jour la case sur laquelle je suis
-			// je met à jour la carte globale
-			// je met à jour mon path
+		public void notifications(){
+			this.currentCell.duration=0;
+			Cell cell=this.currentCell;
+			// update knownGrid
+			this.knownGrid.getCell(currentCell.coordonnee)
+			.set(cell.state, cell.asHuman, cell.fire, 0);
+			// update base.knownGrid
+			this.base.knownGrid.getCell(currentCell.coordonnee)
+			.set(cell.state, cell.asHuman, cell.fire, 0);
 		}
 
 		public void moveOnPath(){
-			// je me déplace sur le chemin
-		}
-
-		public void backToBase(){
-			this.inActivity=false;
-			this.path=getPathHome();
+			if (this.path.size()==0) getnewPath(currentCell.coordonnee);
+			else{
+				this.currentCell=realGrid.getCell(this.path.get(0));
+				this.path.remove(0);
+			}
+			if(currentCell.state==0){
+					this.atBase=true;
+					this.water=2;
+				}
+				else{
+				// s'il y a quelque chose à signaler sur cette case je le signale
+				notifications();
+				}
 		}
 
 		public List<Coordonnee> getnewPath(Coordonnee from){
-			//TODO définir la cellule à allez voir en fonction de la distance et de la position du robot
 			int distanceToBase = getDistanceToBase(from);
 			// le détour qu'on peut se permettre pour tout de meme rentrer.
 			int overflow = ((int)(energy-0.1)*10-distanceToBase)/2;
@@ -127,7 +123,7 @@ public class Robot {
 
 				for (Cell cell : possibleCells) {
 				if (cell.state == 2) {
-					double distance = Math.abs(cell.coordonnee.x-currentCase.coordonnee.x)+Math.abs(cell.coordonnee.y-currentCase.coordonnee.y);
+					double distance = Math.abs(cell.coordonnee.x-currentCell.coordonnee.x)+Math.abs(cell.coordonnee.y-currentCell.coordonnee.y);
 					if (distance < minDistance) {
 						minDistance = distance;
 						objective = cell;
@@ -149,7 +145,7 @@ public class Robot {
 
 				for (Cell cell : possibleCells) {
 				if (cell.state == 1) {
-					double distance = Math.abs(cell.coordonnee.x-currentCase.coordonnee.x)+Math.abs(cell.coordonnee.y-currentCase.coordonnee.y);
+					double distance = Math.abs(cell.coordonnee.x-currentCell.coordonnee.x)+Math.abs(cell.coordonnee.y-currentCell.coordonnee.y);
 					double score = Math.pow(cell.duration, 2) / distance;
 					if (score > maxScore) {
 						maxScore = score;
@@ -166,7 +162,7 @@ public class Robot {
 			return Math.abs(from.x-base.coord.x)+Math.abs(from.y-base.coord.y);
 		}
 
-		// renvoie la liste des cases que le robot peut encore atteeindre vant de devoir rentrer
+		// renvoie la liste des cases que le robot peut encore atteindre vant de devoir rentrer
 		public Set<Cell> getPossibleSpace(Coordonnee from, int overflow){
 			Set<Cell> possibleCells = new HashSet<>();
 			Coordonnee upleft;
@@ -214,13 +210,9 @@ public class Robot {
 			}
 			return possibleCells;
 		}
-
-		public List<Coordonnee> getGoing(){
-			return getnewPath(base.coord);
-		}
 	
 		public List<Coordonnee> getPathHome(){		
-			return getPath(this.currentCase.coordonnee, base.coord);
+			return getPath(this.currentCell.coordonnee, base.coord);
 		}
 	
 		public List<Coordonnee> getPath(Coordonnee C1, Coordonnee C2){
@@ -239,7 +231,7 @@ public class Robot {
 							path.add(new Coordonnee(C1.x+1, C1.y));
 						}
 					}
-					else{
+					else if(deltaY!=0){
 						if(deltaY>0){
 							deltaY-=1;
 							path.add(new Coordonnee(C1.x, C1.y-1));						
