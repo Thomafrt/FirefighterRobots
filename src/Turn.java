@@ -40,11 +40,6 @@ public class Turn {
 						// puis calcule de la grille suivante
 						nextGrid();
 						view.base.turn();
-						//! FIN DU JEU MARCHE PAS
-						if(grid.fires.isEmpty()){//si il n'y a plus de feu
-							stillFire = false; //fin du jeu
-							System.out.println("Fin du jeu");
-						} 
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

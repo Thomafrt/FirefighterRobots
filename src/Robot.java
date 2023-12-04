@@ -98,19 +98,19 @@ public class Robot {
 
 		public void notifications(){
 			this.currentCell.duration=0;
-			if(this.currentCell.asHuman==0){
+			if(this.currentCell.hasHuman==0){
 				if(this.currentCell.state==3){
-					this.currentCell.asHuman=2;
+					this.currentCell.hasHuman=2;
 				}
-				else this.currentCell.asHuman=1;
+				else this.currentCell.hasHuman=1;
 			}
 			Cell cell=this.currentCell;
 			// update knownGrid
 			this.knownGrid.getCell(currentCell.coordonnee)
-			.set(cell.state, cell.asHuman, cell.fire, 0);
+			.set(cell.state, cell.hasHuman, cell.fire, 0);
 			// update base.knownGrid
 			this.base.knownGrid.getCell(currentCell.coordonnee)
-			.set(cell.state, cell.asHuman, cell.fire, 0);
+			.set(cell.state, cell.hasHuman, cell.fire, 0);
 		}
 
 		public void moveOnPath(){
