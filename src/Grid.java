@@ -23,15 +23,16 @@ public class Grid implements Cloneable{
 	 */
 	public ArrayList<Coordonnee> burned = new ArrayList<>();
 
+	public Coordonnee base;
 	
 	/**
 	 * Constructeur de la grille
 	 * @param size
 	 */
-	public Grid(int size) {
+	public Grid(int size, Coordonnee baseCoord){
 		this.size = size;
 		cells = new Cell [size] [size]; //initialisation de la grille
-		bases.add(new Coordonnee(size/2, size/2)); //coordonnées de la base au centre de la grille (possibilité d'avoir plusieurs bases)
+		bases.add(baseCoord); //coordonnées de la base au centre de la grille (possibilité d'avoir plusieurs bases)
 		for(int i=0; i<cells.length; i++) {
 			for(int j=0; j<cells[i].length;j++) {
 				for (Coordonnee base : bases) {

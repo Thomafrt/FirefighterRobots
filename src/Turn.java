@@ -15,10 +15,16 @@ public class Turn {
 	GridView view;
 	int turnNb = 0;
 	boolean stillFire = true;
+	int sleepTime;
+	double propagationProb;
+	double extinctionProb;
 
-	public Turn(GridView view) {
+	public Turn(GridView view, int sleepTime, double propagationProb, double extinctionProb) {
 		this.view = view;
-		grid = view.grid;
+		this.grid = view.grid;
+		this.sleepTime = sleepTime;
+		this.propagationProb = propagationProb;
+		this.extinctionProb = extinctionProb;
 	}
 
 	public void run() {
@@ -31,7 +37,7 @@ public class Turn {
 				while(stillFire){ //tant qu'il reste des cases en feu
 					try {
 						// thread en pause pendant 1 seconde
-						Thread.sleep(1000);
+						Thread.sleep(sleepTime);
 						// puis calcule de la grille suivante
 						nextGrid();
 						//! FIN DU JEU MARCHE PAS
@@ -45,7 +51,7 @@ public class Turn {
 				}
 			}
 		};
-		timer.scheduleAtFixedRate(task, 0, 1000);
+		timer.scheduleAtFixedRate(task, 0, sleepTime);
 	}
 
 	/**
@@ -80,30 +86,30 @@ public class Turn {
 		int y = currentCell.coordonnee.y;
 		if(grid.isInSide(x, y-1)){ //si la cellule de gauche est dans la grille
 			Cell leftCell = grid.getCell(x,y-1);
-			if(leftCell.getState()==1 && random.nextDouble() < 0.5){ //et qu'elle est safe
+			if(leftCell.getState()==1 && random.nextDouble() < propagationProb){ //et qu'elle est safe
 				leftCell.setState(2); //elle devient en feu
 			}
 		}
 		if(grid.isInSide(x, y+1)){ //si la cellule de droite est dans la grille
 			Cell rightCell = grid.getCell(x,y+1);
-			if(rightCell.getState()==1 && random.nextDouble() < 0.5){ //et qu'elle est safe
+			if(rightCell.getState()==1 && random.nextDouble() < propagationProb){ //et qu'elle est safe
 				rightCell.setState(2); //elle devient en feu
 			}
 		}
 		if(grid.isInSide(x-1, y)){ //si la cellule du haut est dans la grille
 			Cell topCell = grid.getCell(x-1,y);
-			if(topCell.getState()==1 && random.nextDouble() < 0.5){ //et qu'elle est safe
+			if(topCell.getState()==1 && random.nextDouble() < propagationProb){ //et qu'elle est safe
 				topCell.setState(2); //elle devient en feu
 			}
 		} 
 		if(grid.isInSide(x+1, y)){ //si la cellule du bas est dans la grille
 			Cell bottomCell = grid.getCell(x+1,y);
-			if(bottomCell.getState()==1 && random.nextDouble() < 0.5){ //et qu'elle est safe
+			if(bottomCell.getState()==1 && random.nextDouble() < propagationProb){ //et qu'elle est safe
 				bottomCell.setState(2); //elle devient en feu
 			}
 		}
 		//si la cellule est en feu depuis plus de 3 tours
-		if (currentCell.getState() == 2 && random.nextDouble() < 0.1) { //10% de chance de passer à l'état burned
+		if (currentCell.getState() == 2 && random.nextDouble() < extinctionProb) { //10% de chance de passer à l'état burned
 			currentCell.setState(4);
 		}
     }
