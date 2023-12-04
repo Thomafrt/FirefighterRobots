@@ -16,7 +16,7 @@ public class Robot {
 	public Base base;
 	
 	public Robot(Grid knownGrid, Grid realGrid, Base base) {
-		this.energy=30;
+		this.energy=realGrid.getSize()*2;
 		this.water=20;
 		this.knownGrid=knownGrid;
 		this.realGrid=realGrid;
@@ -36,8 +36,8 @@ public class Robot {
 		// System.out.println("Robot, coord: "+this.currentCell.coordonnee.x+" "+this.currentCell.coordonnee.y+", pathsize: "+path.size());
 		// si je suis à la base et que je suis plein, je mets à jour la carte, je trace un itinéraire et je pars...
 		if(atBase){
-			if(energy>=30){
-				this.energy=30;
+			if(energy>=realGrid.getSize()*2){
+				this.energy=realGrid.getSize()*2;
 				this.knownGrid=base.knownGrid.clone();
 				this.path=getnewPath(currentCell.coordonnee);
 				if(this.path.size()>0){
@@ -157,7 +157,6 @@ public class Robot {
 			// sinon on va voir une case safe connu depuis longtemps en rapport "age de l'info"²/distance
 			int[] maxScores = new int[5];
 			Cell[] objectives = new Cell[5];
-			int maxScore = 0;
 
 				for (Cell cell : possibleCells) {
 				if (cell.state == 1) {
