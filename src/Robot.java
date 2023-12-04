@@ -15,7 +15,7 @@ public class Robot {
 	public List<Coordonnee> path;
 	public Base base;
 	
-	public Robot(Grid knownGrid, Grid reaGrid, Base base) {
+	public Robot(Grid knownGrid, Grid realGrid, Base base) {
 		this.energy=3;
 		this.water=2;
 		this.knownGrid=knownGrid;

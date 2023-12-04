@@ -39,6 +39,7 @@ public class Turn {
 						Thread.sleep(sleepTime);
 						// puis calcule de la grille suivante
 						nextGrid();
+						view.base.turn();
 						//! FIN DU JEU MARCHE PAS
 						if(grid.fires.isEmpty()){//si il n'y a plus de feu
 							stillFire = false; //fin du jeu
