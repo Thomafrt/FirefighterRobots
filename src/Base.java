@@ -8,7 +8,7 @@ public class Base {
 	
 	public Base(Grid realGrid, Coordonnee coordonnee, int nbRobots) {
 		this.coord = coordonnee;	
-		this.knownGrid = new Grid(realGrid.getSize(), coordonnee, false, realGrid.propagationProb, 0);
+		this.knownGrid = new Grid(realGrid.getSize(), coordonnee, false, realGrid.propagationProb, 0, 0);
 		this.robots = new Robot[nbRobots];
 		for(int i=0; i<nbRobots; i++) {
 			robots[i] = new Robot(knownGrid.clone(), realGrid, this);

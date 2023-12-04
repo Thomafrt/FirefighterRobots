@@ -31,7 +31,7 @@ public class Grid implements Cloneable{
 	 * Constructeur de la grille
 	 * @param size
 	 */
-	public Grid(int size, Coordonnee baseCoord, boolean real, double propagationProb, int nbHumans){
+	public Grid(int size, Coordonnee baseCoord, boolean real, double propagationProb, int nbHumans, int nbFires){
 		this.size = size;
 		cells = new Cell [size] [size]; //initialisation de la grille
 		bases.add(baseCoord); //coordonnées de la base au centre de la grille (possibilité d'avoir plusieurs bases)
@@ -48,7 +48,7 @@ public class Grid implements Cloneable{
 			}
 		}
 		if(real){ //Si c'est la grille originale
-			setFirstFire(bases); //mettre le premier feu (case différente de la base)
+			setFirstFire(bases, nbFires); //mettre le premier feu (case différente de la base)
 			setHumans(nbHumans);
 		} 
 		this.propagationProb = propagationProb;
@@ -58,17 +58,27 @@ public class Grid implements Cloneable{
 	 * Mettre le premier feu
 	 * @param bases
 	 */
-	public void setFirstFire(ArrayList<Coordonnee> bases) {
-        Random rand = new Random();
-        int x;
-        int y;
-        do {
-            x = rand.nextInt(size);
-            y = rand.nextInt(size);
-        } while (isBase(x, y));
-        cells[x][y].state = 2;
-		cells[x][y].fire = 10;
-        fires.add(new Coordonnee(x, y));
+	public void setFirstFire(ArrayList<Coordonnee> bases, int nbFires) {
+		for(int i=0; i<nbFires; i++){
+			Random rand = new Random();
+			int x;
+			int y;
+			boolean isKnownFire;
+			do {
+				x = rand.nextInt(size);
+				y = rand.nextInt(size);
+				isKnownFire = false;
+				for (Coordonnee fire : fires) {
+					if (fire.x == x && fire.y == y) {
+						isKnownFire = true;
+						break;
+					}
+				}
+			} while (isBase(x, y) || isKnownFire);
+			cells[x][y].state = 2;
+			cells[x][y].fire = 10;
+			fires.add(new Coordonnee(x, y));
+		}
     }
 
 	public void setHumans(int nbHumans){
