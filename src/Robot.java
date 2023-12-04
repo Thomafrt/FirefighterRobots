@@ -155,8 +155,8 @@ public class Robot {
 				return getPath(from, objective.coordonnee);
 			} else {
 			// sinon on va voir une case safe connu depuis longtemps en rapport "age de l'info"²/distance
-			int[] maxScores = new int[5];
-			Cell[] objectives = new Cell[5];
+			int[] maxScores = new int[(base.robots.length/2)];
+			Cell[] objectives = new Cell[(base.robots.length/2)];
 
 				for (Cell cell : possibleCells) {
 				if (cell.state == 1) {
@@ -171,7 +171,7 @@ public class Robot {
 					}
 				}	
 			}
-			objective = objectives[(int)(Math.random()*5)];
+			objective = objectives[(int)(Math.random()*(base.robots.length/2))];
 			if(objective!=null){
 				return getPath(from, objective.coordonnee);
 			}
