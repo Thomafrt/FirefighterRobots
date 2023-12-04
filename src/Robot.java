@@ -156,19 +156,23 @@ public class Robot {
 			} else {
 			// sinon on va voir une case safe connu depuis longtemps en rapport "age de l'info"²/distance
 			int[] maxScores = new int[5];
+			Cell[] objectives = new Cell[5];
 			int maxScore = 0;
 
 				for (Cell cell : possibleCells) {
 				if (cell.state == 1) {
 					int distance = Math.abs(cell.coordonnee.x-currentCell.coordonnee.x)+Math.abs(cell.coordonnee.y-currentCell.coordonnee.y);
 					int score = (int)((Math.pow(cell.duration, 2) / distance)*cell.fireProximity);
-					if (score > maxScore) {
-						maxScore = score;
-						objective = cell;
+					for (int i = 0; i < maxScores.length; i++) {
+						if (score > maxScores[i]) {
+							maxScores[i] = score;
+							objectives[i] = cell;
+							break;
+						}
 					}
 				}	
 			}
-			System.out.println("maxScore: "+maxScore);
+			objective = objectives[(int)(Math.random()*5)];
 			if(objective!=null){
 				return getPath(from, objective.coordonnee);
 			}
