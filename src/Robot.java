@@ -155,6 +155,7 @@ public class Robot {
 				return getPath(from, objective.coordonnee);
 			} else {
 			// sinon on va voir une case safe connu depuis longtemps en rapport "age de l'info"²/distance
+			int[] maxScores = new int[5];
 			int maxScore = 0;
 
 				for (Cell cell : possibleCells) {
