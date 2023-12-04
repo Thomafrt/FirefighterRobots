@@ -36,7 +36,8 @@ public class Robot {
 		// System.out.println("Robot, coord: "+this.currentCell.coordonnee.x+" "+this.currentCell.coordonnee.y+", pathsize: "+path.size());
 		// si je suis à la base et que je suis plein, je mets à jour la carte, je trace un itinéraire et je pars...
 		if(atBase){
-			if(energy==30){
+			if(energy>=30){
+				this.energy=30;
 				this.knownGrid=base.knownGrid.clone();
 				this.path=getnewPath(currentCell.coordonnee);
 				if(this.path.size()>0){
@@ -46,7 +47,7 @@ public class Robot {
 				}
 				//... sinon je me recharge de 0.1 énérgie
 			}else{
-				energy+=1;
+				energy+=10;
 			}
 		}
 		else{
