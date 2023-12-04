@@ -12,7 +12,6 @@ public class Robot {
 	public Grid knownGrid;
 	public boolean atBase;
 	public boolean inActivity;
-	public Modification[] modifications;
 	public Cell currentCase;
 	public List<Coordonnee> path;
 	public Base base;
@@ -64,7 +63,7 @@ public class Robot {
 					this.water-=1;
 					update(3);
 					this.wateringTimer=9;
-					modifications[modifications.length]=new Modification(currentCase, 2);
+					update(2);
 					// TODO update knownGrid
 				}
 				else{
@@ -170,7 +169,6 @@ public class Robot {
 		// renvoie la liste des cases que le robot peut encore atteeindre vant de devoir rentrer
 		public Set<Cell> getPossibleSpace(Coordonnee from, int overflow){
 			Set<Cell> possibleCells = new HashSet<>();
-			Set<Cell> rectangle = new HashSet<>();
 			Coordonnee upleft;
 			Coordonnee upright;
 			Coordonnee downleft;
