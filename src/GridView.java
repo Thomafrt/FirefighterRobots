@@ -23,9 +23,8 @@ public class GridView extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-					//PARAMETRES
-					int nbRobots = 20;
-					int sleepTime = 500;
+					int nbRobots = 7;
+					int sleepTime = 100;
 					int gridSize = 21;
 					double propagationProb = 0.5;
 					double extinctionProb = 0.3;
