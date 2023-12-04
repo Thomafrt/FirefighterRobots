@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class Robot {
 
-	public float energy;
-	public float water;
+	public int energy;
+	public int water;
 	public Grid knownGrid;
 	public Grid realGrid;
 	public boolean atBase;
@@ -63,6 +63,7 @@ public class Robot {
 						water-=1;
 						this.currentCell.fire-=1;
 						this.realGrid.getCell(currentCell.coordonnee).fire-=1;
+						setProximity();
 						notifications();
 						if(this.currentCell.fire==0){
 							this.currentCell.state=3;
@@ -87,6 +88,11 @@ public class Robot {
 			energy-=1;
 		}
 		knownGrid.incrementDuration();
+	}
+
+	public void setProximity(){
+		this.knownGrid.addfireProximity(currentCell,1,new ArrayList<Cell>());	
+		base.knownGrid.addfireProximity(currentCell,1,new ArrayList<Cell>());
 	}
 
 
@@ -133,11 +139,11 @@ public class Robot {
 			// Si il y a un feu et qu'il est encore temps de l'eteindre on va eteindre le feu
 
 			//trouve le feu le plus proche
-			double minDistance = Double.MAX_VALUE;
+			int minDistance = 1000;
 
 				for (Cell cell : possibleCells) {
 				if (cell.state == 2) {
-					double distance = Math.abs(cell.coordonnee.x-currentCell.coordonnee.x)+Math.abs(cell.coordonnee.y-currentCell.coordonnee.y);
+					int distance = Math.abs(cell.coordonnee.x-currentCell.coordonnee.x)+Math.abs(cell.coordonnee.y-currentCell.coordonnee.y);
 					if (distance < minDistance) {
 						minDistance = distance;
 						objective = cell;
@@ -149,18 +155,19 @@ public class Robot {
 				return getPath(from, objective.coordonnee);
 			} else {
 			// sinon on va voir une case safe connu depuis longtemps en rapport "age de l'info"²/distance
-			double maxScore = 0;
+			int maxScore = 0;
 
 				for (Cell cell : possibleCells) {
 				if (cell.state == 1) {
-					double distance = Math.abs(cell.coordonnee.x-currentCell.coordonnee.x)+Math.abs(cell.coordonnee.y-currentCell.coordonnee.y);
-					double score = Math.pow(cell.duration, 2) / distance;
+					int distance = Math.abs(cell.coordonnee.x-currentCell.coordonnee.x)+Math.abs(cell.coordonnee.y-currentCell.coordonnee.y);
+					int score = (int)((Math.pow(cell.duration, 2) / distance)*cell.fireProximity);
 					if (score > maxScore) {
 						maxScore = score;
 						objective = cell;
 					}
 				}	
 			}
+			System.out.println("maxScore: "+maxScore);
 			if(objective!=null){
 				return getPath(from, objective.coordonnee);
 			}

@@ -5,6 +5,7 @@ public class Cell implements Cloneable {
 	public int asHuman; // 0: safe 1: saved 2: dead
 	public int fire; // value between 0 and 1 with 0.1 steps down
 	public int duration;
+	public double fireProximity;
 	
 	public Cell(Coordonnee coordonnee, int state) {
 		this.coordonnee=coordonnee;
@@ -12,6 +13,7 @@ public class Cell implements Cloneable {
 		this.asHuman=0;
 		this.fire=0;
 		this.duration=0;
+		this.fireProximity=1;
 	}
 
 	public void set(int state, int asHuman, int fire, int duration) {

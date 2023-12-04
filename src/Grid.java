@@ -24,12 +24,14 @@ public class Grid implements Cloneable{
 	public ArrayList<Coordonnee> burned = new ArrayList<>();
 
 	public Coordonnee base;
+
+	public double propagationProb;
 	
 	/**
 	 * Constructeur de la grille
 	 * @param size
 	 */
-	public Grid(int size, Coordonnee baseCoord, boolean setFire){
+	public Grid(int size, Coordonnee baseCoord, boolean setFire, double propagationProb){
 		this.size = size;
 		cells = new Cell [size] [size]; //initialisation de la grille
 		bases.add(baseCoord); //coordonnées de la base au centre de la grille (possibilité d'avoir plusieurs bases)
@@ -46,6 +48,7 @@ public class Grid implements Cloneable{
 			}
 		}
 		if(setFire) setFirstFire(bases); //mettre le premier feu (case différente de la base)
+		this.propagationProb = propagationProb;
 	}
 
 	/**
@@ -124,6 +127,44 @@ public class Grid implements Cloneable{
 			for(int j=0; j<cells[i].length;j++) {
 				cells[i][j].duration++;
 			}
+		}
+	}
+
+	public void addfireProximity(Cell onFire, int step, ArrayList<Cell> ponderated){
+		if(step<6){
+		int x = onFire.coordonnee.x;
+		int y = onFire.coordonnee.y;
+		ArrayList<Cell> neighbors = new ArrayList<Cell>();
+		if(isInSide(x, y-1)){ //si la cellule de gauche est dans la grille
+			Cell leftCell = getCell(x,y-1);
+			if(leftCell.getState()==1){ //et qu'elle est safe
+				neighbors.add(leftCell);
+			}
+		}
+		if(isInSide(x, y+1)){ //si la cellule de droite est dans la grille
+			Cell rightCell = getCell(x,y+1);
+			if(rightCell.getState()==1){ //et qu'elle est safe
+				neighbors.add(rightCell);
+			}
+		}
+		if(isInSide(x-1, y)){ //si la cellule du haut est dans la grille
+			Cell topCell = getCell(x-1,y);
+			if(topCell.getState()==1){ //et qu'elle est safe
+				neighbors.add(topCell);
+			}
+		}
+		if(isInSide(x+1, y)){ //si la cellule du bas est dans la grille
+			Cell bottomCell = getCell(x+1,y);
+			if(bottomCell.getState()==1){ //et qu'elle est safe
+				neighbors.add(bottomCell);
+			}
+		}
+		for (Cell neighbor : neighbors) {
+			double coeff= (propagationProb/step)+1.5;
+			if(neighbor.fireProximity<coeff)neighbor.fireProximity=coeff;
+			ponderated.add(neighbor);
+			addfireProximity(neighbor, step+1, ponderated);
+		}
 		}
 	}
 
