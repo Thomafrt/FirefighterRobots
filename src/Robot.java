@@ -98,11 +98,11 @@ public class Robot {
 
 		public void notifications(){
 			this.currentCell.duration=0;
-			if(this.currentCell.hasHuman==0){
+			if(this.currentCell.hasHuman==1){
 				if(this.currentCell.state==3){
-					this.currentCell.hasHuman=2;
+					this.currentCell.hasHuman=3;
 				}
-				else this.currentCell.hasHuman=1;
+				else this.currentCell.hasHuman=2;
 			}
 			Cell cell=this.currentCell;
 			// update knownGrid
