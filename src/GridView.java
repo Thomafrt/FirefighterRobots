@@ -25,7 +25,7 @@ public class GridView extends JFrame {
                 try {
 					int nbRobots = 7;
 					int sleepTime = 100;
-					int gridSize = 25;
+					int gridSize = 21;
 					double propagationProb = 0.5;
 					double extinctionProb = 0.3;
 					int nbHumans = 5;
