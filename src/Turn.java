@@ -5,6 +5,9 @@
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class Turn {
 
@@ -53,14 +56,21 @@ public class Turn {
 		nextGrid = currentGrid.clone();
 		System.out.println("Turn "+turnNb);
 		int size = currentGrid.getSize();
+		//* crée une liste des cellule en feu */
+		List<Cell> fireCells= new ArrayList<Cell>();; //tableau des cellules en feu
 		//parcourir la grille
 		for(int i=0; i<size; i++) {
 			for(int j=0; j<size; j++) {
 				Cell currentCell = currentGrid.getCell(i,j);
 				if(currentCell.getState()==2){ //si la cellule est en feu
-					propagateFire(i, j); //propager le feu
+					fireCells.add(currentCell); //ajouter la cellule au tableau des cellules en feu
+					//*propagateFire(i, j); //propager le feu
 				}
 			}
+		}
+		//* le feu se propage */
+		for (Cell cell : fireCells) {
+			propagateFire(cell.getCoordonnee().x, cell.getCoordonnee().y);
 		}
 		currentGrid = nextGrid.clone(); //la grille actuelle devient la grille suivante
 		view.updateGrid(nextGrid); //mettre à jour la grille dans la vue

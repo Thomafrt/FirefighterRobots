@@ -15,7 +15,6 @@ public class Base {
 		}
 		this.inactivityCounter=0;
 		this.inActivity=true;
-		
 	}
 
 	public void turn() {
