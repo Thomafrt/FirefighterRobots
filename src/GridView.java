@@ -112,7 +112,6 @@ public class GridView extends JFrame {
 						}
 					}
 					// Ajouter les robots
-
 					for (int i=0; i<base.robots.length; i++) {
 						Coordonnee robot = base.robots[i].currentCell.getCoordonnee();
 						if (row == robot.x && col == robot.y) {
@@ -123,6 +122,32 @@ public class GridView extends JFrame {
                 			g.fillOval(circleX, circleY, circleSize, circleSize);
 						}
 					}
+					// Ajouter les humains
+					if(grid.getCell(row, col).hasHuman != 0) {
+						if(grid.getCell(row, col).hasHuman == 1){
+							g.setColor(Color.GREEN);
+							int circleSize = (int) (cellSize * 0.5); // Taille du cercle, ajustez si nécessaire
+							int circleX = x + (cellSize - circleSize) / 2;
+							int circleY = y + (cellSize - circleSize) / 2;
+							g.fillOval(circleX, circleY, circleSize, circleSize);
+						}
+						else if(grid.getCell(row, col).hasHuman == 2){
+							g.setColor(Color.ORANGE);
+							int circleSize = (int) (cellSize * 0.5); // Taille du cercle, ajustez si nécessaire
+							int circleX = x + (cellSize - circleSize) / 2;
+							int circleY = y + (cellSize - circleSize) / 2;
+							g.fillOval(circleX, circleY, circleSize, circleSize);
+						}
+						else if(grid.getCell(row, col).hasHuman == 3){
+							g.setColor(Color.WHITE);
+							int circleSize = (int) (cellSize * 0.5); // Taille du cercle, ajustez si nécessaire
+							int circleX = x + (cellSize - circleSize) / 2;
+							int circleY = y + (cellSize - circleSize) / 2;
+							g.fillOval(circleX, circleY, circleSize, circleSize);
+						}
+
+					}
+					
 				}
 			}
 		}
