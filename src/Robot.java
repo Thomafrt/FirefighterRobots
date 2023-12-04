@@ -157,7 +157,6 @@ public class Robot {
 			// sinon on va voir une case safe connu depuis longtemps en rapport "age de l'info"²/distance
 			int[] maxScores = new int[5];
 			Cell[] objectives = new Cell[5];
-			int maxScore = 0;
 
 				for (Cell cell : possibleCells) {
 				if (cell.state == 1) {
