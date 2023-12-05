@@ -17,7 +17,7 @@ public class Main {
 					double extinctionProb = 0.3; //Pourcentage de chance que le feu consume entièrement la case
 					int gridSize = 25; //Taille de la grille
 					int nbHumans = 20; //Nombre d'humains sur la grille (placés aléatoirement)
-					int nbFireStart = 2; //Nombre de départs de feu (placés aléatoirement)
+					int nbFireStart = 3; //Nombre de départs de feu (placés aléatoirement)
                     ////////////////////////////////////////////////////////////////////////////////////////////
 
 					//Créer la grille
