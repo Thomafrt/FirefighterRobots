@@ -1,9 +1,12 @@
 # FirefighterRobots
 
-Compilation :
+Compilation du projet:
 
 javac -d bin src/*.java
 
-Lancement fenetre :
 
-java -cp bin GridView
+Lancement de l'application :
+
+java -cp bin Main
+
+Les paramètres son modifiables dans le fichier src/Main.java

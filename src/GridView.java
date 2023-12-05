@@ -10,42 +10,18 @@ public class GridView extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-	/**
-	 * La grille du modèle
-	 */
-    public Grid grid;
-
+    public Grid grid; //la grille du modèle
 	public Base base;
-
 	public int nbHumans;
-	/**
-	 * Launch the application.
-	 */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-					//PARAMETRES
-					int nbRobots = 15;
-					int sleepTime = 100;
-					int gridSize = 21;
-					double propagationProb = 0.5;
-					double extinctionProb = 0.3;
-					int nbHumans = 20;
-					int nbFireStart = 2;
-					//Créer la grille
-                    GridView frame = new GridView(nbRobots, gridSize, propagationProb, nbHumans, nbFireStart);  // Passer la taille souhaitée
-                    frame.setVisible(true);
-					//Lancer les tours
-					Turn turn = new Turn(frame, sleepTime, propagationProb, extinctionProb);
-					turn.run();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
+	/**
+	 * Create the frame.
+	 * @param nbRobots
+	 * @param gridSize
+	 * @param propagationProb
+	 * @param nbHumans
+	 * @param nbFireStart
+	 */
     public GridView(int nbRobots, int gridSize, double propagationProb, int nbHumans, int nbFireStart) {
 		Coordonnee baseCoordonnee = new Coordonnee(gridSize/2, gridSize/2);
 		this.grid= new Grid(gridSize, baseCoordonnee, true, propagationProb, nbHumans, nbFireStart);		
@@ -159,6 +135,7 @@ public class GridView extends JFrame {
 			}
 		}
 	}	
+	
 	/**
 	 * Met à jour la grille
 	 * @param newGrid

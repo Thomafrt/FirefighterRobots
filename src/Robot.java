@@ -69,8 +69,6 @@ public class Robot {
 							notifications();
 							this.path=getnewPath(currentCell.coordonnee);
 						}
-						System.out.println("fire on" +currentCell.coordonnee.x +" "+currentCell.coordonnee.y+", "+realGrid.getCell(currentCell.coordonnee).fire+" left, state: "+currentCell.state);
-
 					}
 				}
 				else{
@@ -138,7 +136,6 @@ public class Robot {
 		// Si il y a un feu et qu'il est encore temps de l'eteindre on va eteindre le feu
 
 		//trouve le feu le plus proche
-		int minDistance = 1000;
 		int[] minDistances = new int[(base.robots.length/4)];
 		Cell[] objectives = new Cell[(base.robots.length/4)];
 

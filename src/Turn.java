@@ -27,7 +27,6 @@ public class Turn {
 	}
 
 	public void run() {
-
 		Timer timer = new Timer();
 		// Créez une tâche qui sera exécutée toutes les secondes
 		TimerTask task = new TimerTask() {
@@ -46,7 +45,6 @@ public class Turn {
 				}
 				System.out.println("Fin du jeu");
 				System.out.println("Nombre de tours : "+turnNb);
-				List<Cell> Cells = new ArrayList<Cell>();
 				int safeCells = 0;
 				int safeHumans = view.nbHumans;
 				for(int i=0; i<grid.getSize(); i++) {
@@ -75,7 +73,7 @@ public class Turn {
 		view.updateGrid(grid); //mettre à jour la grille dans la vue
 		turnNb++;
 	}
-	 
+	
 	private void propagateFire() {
 		int size = grid.getSize();
 		//* crée une liste des cellule en feu */

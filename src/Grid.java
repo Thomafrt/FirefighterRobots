@@ -24,7 +24,6 @@ public class Grid implements Cloneable{
 	public ArrayList<Coordonnee> burned = new ArrayList<>();
 
 	public Coordonnee base;
-
 	public double propagationProb;
 	
 	/**
@@ -81,6 +80,10 @@ public class Grid implements Cloneable{
 		}
     }
 
+	/**
+	 * Place des humain aléatoirement dans la grille
+	 * @param nbHumans
+	 */
 	public void setHumans(int nbHumans){
 		Random rand = new Random();
 		int x;
@@ -136,7 +139,7 @@ public class Grid implements Cloneable{
 	}
 
 	/**
-	 * 
+	 * Renvoie si 
 	 * @param x
 	 * @param y
 	 * @return true si la coordonnée est dans la grille, false sinon
