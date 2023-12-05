@@ -21,9 +21,9 @@ public class Main {
                     // Demander à l'utilisateur de saisir les paramètres avec des valeurs par défaut
                     int nbRobots = Integer.parseInt(JOptionPane.showInputDialog(null, "Nombre de robots:", defaultNbRobots));
                     int sleepTime = Integer.parseInt(JOptionPane.showInputDialog(null, "Temps d'attente entre chaque tour (ms):", defaultSleepTime));
-                    double propagationProb = Double.parseDouble(JOptionPane.showInputDialog(null, "Probabilité de chance de propagation du feu:", defaultPropagationProb));
-                    double extinctionProb = Double.parseDouble(JOptionPane.showInputDialog(null, "Probabilité de chance d'extinction du feu:", defaultExtinctionProb));
-                    int gridSize = Integer.parseInt(JOptionPane.showInputDialog(null, "Taille de la grille:", defaultGridSize));
+                    double propagationProb = Double.parseDouble(JOptionPane.showInputDialog(null, "Probabilité de propagation du feu:", defaultPropagationProb));
+                    double extinctionProb = Double.parseDouble(JOptionPane.showInputDialog(null, "Probabilité d'extinction d'un feu:", defaultExtinctionProb));
+                    int gridSize = Integer.parseInt(JOptionPane.showInputDialog(null, "Taille de la grille (ex : 25 pour une grille 25x25):", defaultGridSize));
                     int nbHumans = Integer.parseInt(JOptionPane.showInputDialog(null, "Nombre d'humains sur la grille:", defaultNbHumans));
                     int nbFireStart = Integer.parseInt(JOptionPane.showInputDialog(null, "Nombre de départs de feu:", defaultNbFireStart));
 
