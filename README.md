@@ -1,5 +1,6 @@
 # FirefighterRobots
-Système d’exploration autonome par Robots en essaim pour la gestion d’incendies/
+Système d’exploration autonome par Robots en essaim pour la gestion d’incendies.
+
 
 
 
