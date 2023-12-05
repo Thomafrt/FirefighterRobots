@@ -3,7 +3,7 @@ public class Cell implements Cloneable {
 	public Coordonnee coordonnee;
 	public int state; // 0: base 1: safe 2: onFire 3: Burned
 	public int hasHuman; // 0:nobody 1:safe 2:saved 3:dead
-	public int fire; // value between 0 and 1 with 0.1 steps down
+	public int fire; // value between 0 and 10 with 1 steps down
 	public int duration;
 	public double fireProximity;
 	

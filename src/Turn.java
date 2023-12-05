@@ -44,6 +44,23 @@ public class Turn {
 						e.printStackTrace();
 					}
 				}
+				System.out.println("Fin du jeu");
+				System.out.println("Nombre de tours : "+turnNb);
+				List<Cell> Cells = new ArrayList<Cell>();
+				int safeCells = 0;
+				int safeHumans = view.nbHumans;
+				for(int i=0; i<grid.getSize(); i++) {
+					for(int j=0; j<grid.getSize(); j++) {
+						Cell currentCell = grid.getCell(i,j);
+						if(currentCell.getState()==1){ //si la cellule est safe
+							safeCells++;
+							if(currentCell.hasHuman==3) safeHumans--;
+						}
+					}
+				}
+				System.out.println("Nombre de cases safe : "+safeCells+"/"+(grid.getSize()*grid.getSize()-1));
+				System.out.println("Nombre d'humains safe : "+safeHumans+"/"+view.nbHumans);
+				timer.cancel();
 			}
 		};
 		timer.scheduleAtFixedRate(task, 0, sleepTime);
@@ -64,10 +81,12 @@ public class Turn {
 		//* crée une liste des cellule en feu */
 		List<Cell> fireCells= new ArrayList<Cell>();; //tableau des cellules en feu
 		//parcourir la grille
+		stillFire = false;
 		for(int i=0; i<size; i++) {
 			for(int j=0; j<size; j++) {
 				Cell currentCell = grid.getCell(i,j);
 				if(currentCell.getState()==2){ //si la cellule est en feu
+					stillFire = true;
 					fireCells.add(currentCell); //ajouter la cellule au tableau des cellules en feu
 					//*propagateFire(i, j); //propager le feu
 				}

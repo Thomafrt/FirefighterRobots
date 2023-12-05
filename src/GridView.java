@@ -16,6 +16,8 @@ public class GridView extends JFrame {
     public Grid grid;
 
 	public Base base;
+
+	public int nbHumans;
 	/**
 	 * Launch the application.
 	 */
@@ -23,14 +25,15 @@ public class GridView extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-					int nbRobots = 100;
+					//PARAMETRES
+					int nbRobots = 15;
 					int sleepTime = 100;
-					int gridSize = 40;
+					int gridSize = 21;
 					double propagationProb = 0.5;
 					double extinctionProb = 0.3;
 					int nbHumans = 20;
-					int nbFireStart = 4;
-					//PARAMETRES
+					int nbFireStart = 2;
+					//Créer la grille
                     GridView frame = new GridView(nbRobots, gridSize, propagationProb, nbHumans, nbFireStart);  // Passer la taille souhaitée
                     frame.setVisible(true);
 					//Lancer les tours
@@ -47,6 +50,7 @@ public class GridView extends JFrame {
 		Coordonnee baseCoordonnee = new Coordonnee(gridSize/2, gridSize/2);
 		this.grid= new Grid(gridSize, baseCoordonnee, true, propagationProb, nbHumans, nbFireStart);		
 		this.base = new Base(grid, baseCoordonnee, nbRobots);
+		this.nbHumans = nbHumans;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, grid.getSize() * 20, grid.getSize() * 20); // Ajuster la taille de la fenêtre en fonction de la grille
         contentPane = new GridPanel();

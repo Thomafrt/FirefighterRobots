@@ -157,9 +157,11 @@ public class Grid implements Cloneable{
 	}
 
 	public void addfireProximity(Cell onFire, int step, ArrayList<Cell> ponderated){
+		// reiteration sur les cellules voisines jusqu'au step 5
 		if(step<6){
 		int x = onFire.coordonnee.x;
 		int y = onFire.coordonnee.y;
+		// on récupère les cellules voisines safe
 		ArrayList<Cell> neighbors = new ArrayList<Cell>();
 		if(isInSide(x, y-1)){ //si la cellule de gauche est dans la grille
 			Cell leftCell = getCell(x,y-1);
@@ -185,6 +187,7 @@ public class Grid implements Cloneable{
 				neighbors.add(bottomCell);
 			}
 		}
+		// on ajoute un coefficient de proximité au feu au cellule voisine, le plus grand connu est gardé en mémoire
 		for (Cell neighbor : neighbors) {
 			double coeff= (propagationProb/step)+1.5;
 			if(neighbor.fireProximity<coeff)neighbor.fireProximity=coeff;
