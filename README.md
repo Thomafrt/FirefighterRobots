@@ -1,12 +1,10 @@
 # FirefighterRobots
-
-Compilation du projet:
-
-javac -d bin src/*.java
+Système d’exploration autonome par Robots en essaim pour la gestion d’incendies/
 
 
-Lancement de l'application :
 
-java -cp bin Main
+Compilation du projet: javac -d bin src/*.java
 
-Les paramètres son modifiables dans le fichier src/Main.java
+Lancement de l'application : java -cp bin Main
+
+Les paramètres de l'application son modifiables dans le fichier src/Main.java
