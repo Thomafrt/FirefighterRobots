@@ -10,13 +10,13 @@ public class Main {
             public void run() {
                 try {
                     // Valeurs par défaut
-                    int defaultNbRobots = 25;
-                    int defaultSleepTime = 100;
-                    double defaultPropagationProb = 0.5;
-                    double defaultExtinctionProb = 0.3;
-                    int defaultGridSize = 25;
-                    int defaultNbHumans = 20;
-                    int defaultNbFireStart = 3;
+                    int defaultNbRobots = 25; // 25 robots
+                    int defaultSleepTime = 100; // 100 ms entre chaque tour
+                    double defaultPropagationProb = 0.5; // 50% de chance qu'une case prenne feu si elle est adjacente à une case en feu
+                    double defaultExtinctionProb = 0.3; // 30% de chance qu'une case en feu s'éteigne
+                    int defaultGridSize = 25; // Grille de 25x25
+                    int defaultNbHumans = 20; // 20 humains
+                    int defaultNbFireStart = 3; // 3 départs de feu
 
                     // Demander à l'utilisateur de saisir les paramètres avec des valeurs par défaut
                     int nbRobots = Integer.parseInt(JOptionPane.showInputDialog(null, "Nombre de robots:", defaultNbRobots));
