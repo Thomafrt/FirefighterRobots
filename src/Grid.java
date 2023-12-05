@@ -148,6 +148,9 @@ public class Grid implements Cloneable{
 			return true;
 	}
 
+	/**
+	 * incrémente d'1 la duration (age de la connaissance) de toute les cases
+	 */
 	public void incrementDuration(){
 		for(int i=0; i<cells.length; i++) {
 			for(int j=0; j<cells[i].length;j++) {
@@ -156,6 +159,12 @@ public class Grid implements Cloneable{
 		}
 	}
 
+	/**
+	 * attribue des poids aux cases en fonction de leur proximité avec le feu
+	 * @param onFire
+	 * @param step
+	 * @param ponderated
+	 */
 	public void addfireProximity(Cell onFire, int step, ArrayList<Cell> ponderated){
 		// reiteration sur les cellules voisines jusqu'au step 5
 		if(step<6){
