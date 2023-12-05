@@ -11,9 +11,9 @@ public class Main {
 
                     /////////////////////////////////////////////////////////////////////////////////////////////
 					//PARAMETRES modifiables
-					int nbRobots = 15; //Le nombre de robots
+					int nbRobots = 30; //Le nombre de robots
 					int sleepTime = 100; //Le temps d'attente entre chaque tour
-					int gridSize = 21; //Taille de la grille
+					int gridSize = 25; //Taille de la grille
 					double propagationProb = 0.5; //Pourcentage de chance de propagation d'une case à sa voisine
 					double extinctionProb = 0.3; //Pourcentage de chance que le feu consume entièrement la case
 					int nbHumans = 20; //Nombre d'humains sur la grille (placés aléatoirement)

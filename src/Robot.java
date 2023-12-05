@@ -174,7 +174,7 @@ public class Robot {
 			for (Cell cell : possibleCells) {
 			if (cell.state == 1) {
 				int distance = Math.abs(cell.coordonnee.x-currentCell.coordonnee.x)+Math.abs(cell.coordonnee.y-currentCell.coordonnee.y);
-				int score = (int)((Math.pow(cell.duration, 2) / distance)*cell.fireProximity);
+				int score = (int)((cell.duration/ distance)*cell.fireProximity);
 				for (int i = 0; i < maxScores.length; i++) {
 					if (score > maxScores[i]) {
 						maxScores[i] = score;
