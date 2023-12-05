@@ -52,8 +52,8 @@ public class Turn {
 						Cell currentCell = grid.getCell(i,j);
 						if(currentCell.getState()==1){ //si la cellule est safe
 							safeCells++;
-							if(currentCell.hasHuman==3) safeHumans--;
 						}
+						if(currentCell.hasHuman==3) safeHumans--;
 					}
 				}
 				System.out.println("Nombre de cases safe : "+safeCells+"/"+(grid.getSize()*grid.getSize()-1));

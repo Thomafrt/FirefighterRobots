@@ -61,7 +61,7 @@ public class Robot {
 				if(currentCell.state==2){
 					if(water>0){
 						water-=1;
-						this.currentCell.fire-=1;
+						this.currentCell.fire-=2;
 						setProximity();
 						notifications();
 						if(this.currentCell.fire==0){
@@ -98,6 +98,7 @@ public class Robot {
 		if(this.currentCell.hasHuman==1){
 			if(this.currentCell.state==3){
 				this.currentCell.hasHuman=3;
+				System.out.println(realGrid.getCell(currentCell.coordonnee).hasHuman);
 			}
 			else this.currentCell.hasHuman=2;
 		}

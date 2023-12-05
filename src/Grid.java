@@ -201,7 +201,7 @@ public class Grid implements Cloneable{
 		}
 		// on ajoute un coefficient de proximité au feu au cellule voisine, le plus grand connu est gardé en mémoire
 		for (Cell neighbor : neighbors) {
-			double coeff= (propagationProb/step)+1.5;
+			double coeff= (propagationProb*3/step)+1.0;
 			if(neighbor.fireProximity<coeff)neighbor.fireProximity=coeff;
 			ponderated.add(neighbor);
 			addfireProximity(neighbor, step+1, ponderated);
