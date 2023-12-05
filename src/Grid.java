@@ -203,7 +203,7 @@ public class Grid implements Cloneable{
 		for (Cell neighbor : neighbors) {
 			double coeff= (propagationProb*3/step)+1.0;
 			if(neighbor.fireProximity<coeff)neighbor.fireProximity=coeff;
-			ponderated.add(neighbor);
+			if(!ponderated.contains(neighbor))ponderated.add(neighbor);
 			addfireProximity(neighbor, step+1, ponderated);
 		}
 		}
